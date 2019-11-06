@@ -1,7 +1,8 @@
 class Fetch {
 
     constructor() {
-        this.apiUrl = process.env.REACT_APP_API_URL;
+        const hostname = window.location.hostname.split('.');
+        this.apiUrl = process.env.REACT_APP_API_URL || `${hostname[0]}.desaapi.lekapin.com`;
     }
 
     getHeaders(token = null) {

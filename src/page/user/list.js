@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Table, Button, Menu, Dropdown, Icon, Popconfirm, message, Tag } from 'antd';
+import { Card, Table, Button, Menu, Dropdown, Icon, Popconfirm, message } from 'antd';
 import Title from '../../component/title';
 import useTable from '../../component/table';
 import { MyLink, push } from '../../component/link';
