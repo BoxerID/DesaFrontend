@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card, Form, Input, Icon, Button, message } from 'antd';
 import Fetch from '../Fetch';
 //import { GlobalStore } from '../store/store'
@@ -6,7 +6,26 @@ import Fetch from '../Fetch';
 const PageLogin = (props) => {
     const { getFieldDecorator } = props.form;
     const [loading, setLoading] = React.useState(false);
+    const location = window.location.hostname;
     //const [, reducer] = React.useContext(GlobalStore)
+    console.log(window.location)
+
+    useEffect(() => {
+        console.log(location.split('.')[0])
+        fetch(`${Fetch.getUrl('/exists')}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                domain: location.split('.')[0]
+            }),
+        }).then(async (v) => {
+            if (v.status === 404) {
+                props.history.replace('/notfound');
+            }
+        });
+    }, [location, props.history])
 
     const handleSubmit = (e) => {
         e.preventDefault();
