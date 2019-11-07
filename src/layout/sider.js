@@ -12,6 +12,7 @@ const MySider = (props) => {
 
     const menus = [
         { label: 'Dashboard', key: '/dashboard', path: '/dashboard', icon: 'bar-chart', permissions: [] },
+        { label: 'Penduduk', key: '/resident', path: '/resident', icon: 'team', permissions: [] },
         { label: 'User', key: '/user', path: '/user', icon: 'user', permissions: [] },
         {
             label: 'Master', key: '/none', path: '/none', icon: 'form', children: [

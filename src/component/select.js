@@ -4,26 +4,35 @@ import PropTypes from 'prop-types';
 import Fetch from '../Fetch';
 import _ from 'lodash'
 
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'LOADED':
+            return { ...state, loading: false, data: action.payload };
+        case 'LOADING':
+            return { ...state, loading: action.payload }
+        default: return state;
+    }
+}
+
 const MySelect = React.forwardRef((props, ref) => {
-    const [state, setState] = React.useState({ loading: false, limit: 10 })
-    const [data, setData] = React.useState([]);
+    const [state, dispatch] = React.useReducer(reducer, { loading: true, data: [] })
 
     React.useEffect(() => {
+        const fetchData = async (url) => {
+            try {
+                const res = await Fetch.get(url);
+                dispatch({ type: 'LOADED', payload: res.data });
+            } catch (err) {
+
+            }
+        }
         fetchData(props.url);
     }, [props.url]);
 
-    const fetchData = async (url) => {
-        try {
-            const res = await Fetch.get(url);
-            setData(res.data);
-        } catch (err) {
-
-        }
-    }
 
     const onChange = v => {
         if (props.onChangeAdv) {
-            props.onChangeAdv(data.find(v2 => v2[props.valueIndex] === v))
+            props.onChangeAdv(state.data.find(v2 => v2[props.valueIndex] === v))
         }
         props.onChange(v)
     }
@@ -36,12 +45,12 @@ const MySelect = React.forwardRef((props, ref) => {
                 return false
             }}
             {...props} onChange={onChange}>
-            {data.map(v => {
-                return <Select.Option key={v.id} value={_.get(v, props.valueIndex)}>{_.get(v, props.dataIndex)}</Select.Option>
+            {state.data.map(v => {
+                return <Select.Option key={v[props.valueIndex]} value={_.get(v, props.valueIndex)}>{_.get(v, props.dataIndex)}</Select.Option>
             })}
             {props.showloadmore && <Select.Option disabled key="loadmore" value={'_'}><div className="span-click" style={{ textAlign: 'center' }} onClick={() => {
                 if (!state.loading) {
-                    setState({ ...state, loading: true })
+                    dispatch({ type: 'LOADING', payload: true })
                 }
             }}><Divider style={{ margin: '1px 0' }} />{state.loading ? 'loading...' : 'load more'}</div></Select.Option>}
         </Select >
@@ -59,7 +68,7 @@ MySelect.propTypes = {
 
 MySelect.defaultProps = {
     mode: 'single',
-    valueIndex: 'id',
+    valueIndex: '_id',
     showloadmore: false,
 }
 

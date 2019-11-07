@@ -7,6 +7,8 @@ import PageNotFound from './page/notfound'
 import PageProfile from './page/profile/profile';
 import PageDashboard from './page/dashboard/dashboard';
 import PageUserList from './page/user/list';
+import PageResidentList from './page/resident/list'
+import PageResidentAdd from './page/resident/add'
 
 import LoginModal from './page/loginmodal'
 import { StoreProvider } from './store/store';
@@ -38,6 +40,8 @@ class App extends Component {
             <DefaultRoute path="/dashboard" component={PageDashboard} exact />
             <DefaultRoute path="/profile" component={PageProfile} exact />
             <DefaultRoute path="/user" component={PageUserList} exact />
+            <DefaultRoute path="/resident" component={PageResidentList} exact />
+            <DefaultRoute path="/resident/add" component={PageResidentAdd} exact />
             <DefaultRoute path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>
